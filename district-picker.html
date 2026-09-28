@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Confirm your district — What's On My Ballot</title>
-<meta name="description" content="Your ZIP code touches more than one district. Confirm yours to see the correct ballot.">
+<title>Pick your districts — What's On My Ballot</title>
+<meta name="description" content="Choose your U.S. House, PA Senate, and PA House districts to see your exact ballot.">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#faf9f7">
 <link rel="stylesheet" href="css/styles.css">
@@ -32,18 +32,25 @@
 <main class="wrap">
   <div class="banner" role="alert">
     <strong>District unconfirmed.</strong>
-    ZIP code <strong id="picker-zip">—</strong> alone can't pinpoint your district — ZIP codes are mail routes, not political boundaries. Pick your district below, or <a href="index.html">go back and enter your full street address</a> for an exact match.
+    ZIP code <strong id="picker-zip">—</strong> alone can't pinpoint your district — ZIP codes are mail routes, not political boundaries. Pick your districts below to see the right ballot.
   </div>
 
-  <h1 class="section-title">Which district are you in?</h1>
-  <p id="picker-note" class="hint"></p>
+  <h1 class="section-title">Which districts are you in?</h1>
+  <p class="hint">Philadelphia touches three U.S. House districts (<strong>PA-02</strong>, <strong>PA-03</strong>, <strong>PA-05</strong>). Choose each district you're in from the lists — pulled from our election dataset. Your choices are saved on this device.</p>
 
-  <form id="picker-form">
-    <div id="district-list" role="radiogroup" aria-label="Congressional districts"></div>
+  <form id="picker-form" novalidate>
+    <div id="picker-selects" aria-live="polite">
+      <p class="hint">Loading districts…</p>
+    </div>
+    <p id="picker-error" class="hint" hidden style="color:#b45309">Please choose at least one district before continuing.</p>
     <button class="btn btn-block" type="submit">Show my ballot</button>
   </form>
 
-  <p class="hint" style="margin-top:16px">Not sure? Look up your official district at the <a href="https://www.pavoterservices.pa.gov/">PA voter services site</a>, then come back and pick it here.</p>
+  <div id="addr-note" class="demo-note" hidden>
+    <strong>A note on address lookup.</strong> Exact address or ZIP+4 lookup needs a Google Civic API key, which we don't have yet — so we don't resolve addresses at all. We'd rather ask you to pick your districts manually than risk showing you the wrong ballot.
+  </div>
+
+  <p class="hint" style="margin-top:16px">Not sure? Look up your official districts at the <a href="https://www.pavoterservices.pa.gov/">PA voter services site</a>, then come back and pick them here.</p>
 </main>
 
 <footer class="site-footer">
