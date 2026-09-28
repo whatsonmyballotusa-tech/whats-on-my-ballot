@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What's On My Ballot — Philadelphia</title>
+<meta name="description" content="Free, non-partisan. Enter your address and see exactly what's on your Philadelphia ballot — candidates, bios, voting records, and platforms.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#faf9f7">
+<style>
+/* What's On My Ballot — neutral, non-partisan design system.
+   Deliberately NO red/blue party color-coding anywhere. */
+
+:root {
+  --bg: #faf9f7;
+  --surface: #ffffff;
+  --ink: #1c1917;
+  --muted: #78716c;
+  --faint: #a8a29e;
+  --border: #e7e5e4;
+  --accent: #92400e;        /* warm amber-brown, party-neutral */
+  --accent-soft: #fef3c7;
+  --accent-border: #f5d78e;
+  --warn-bg: #fffbeb;
+  --warn-border: #fcd34d;
+  --warn-ink: #78350f;
+  --radius: 12px;
+  --maxw: 760px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  font-size: 16px;
+}
+
+a { color: var(--accent); }
+a:hover { color: #78350f; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 16px; }
+
+/* ---------- header ---------- */
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+.brand svg { flex: none; }
+.brand-name { font-weight: 700; font-size: 1.05rem; line-height: 1.2; }
+.brand-sub { font-size: 0.75rem; color: var(--muted); }
+.site-nav { display: flex; gap: 14px; font-size: 0.9rem; }
+.site-nav a { color: var(--muted); text-decoration: none; }
+.site-nav a:hover { color: var(--ink); text-decoration: underline; }
+
+/* ---------- hero / home ---------- */
+.hero { padding: 36px 0 8px; text-align: left; }
+.hero h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 10px; }
+.hero p.lede { color: var(--muted); font-size: 1.05rem; margin: 0 0 20px; }
+
+.lookup-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 8px 0 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+.lookup-card label { display: block; font-weight: 600; margin: 12px 0 6px; font-size: .95rem; }
+.lookup-card label:first-child { margin-top: 0; }
+.lookup-card input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+}
+.lookup-card input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.hint { font-size: .85rem; color: var(--muted); margin: 6px 0 0; }
+
+.btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 22px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 16px;
+}
+.btn:hover { background: #78350f; color: #fff; }
+.btn-block { display: block; width: 100%; }
+.btn-secondary {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: var(--bg); color: var(--ink); }
+
+.tiers { display: grid; gap: 12px; margin: 0 0 28px; }
+@media (min-width: 640px) { .tiers { grid-template-columns: 1fr 1fr 1fr; } }
+.tier {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.tier h3 { margin: 0 0 6px; font-size: .95rem; }
+.tier p { margin: 0; font-size: .88rem; color: var(--muted); }
+.tier .grade { display: inline-block; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); margin-bottom: 6px; }
+
+.section-title { font-size: 1.25rem; margin: 28px 0 12px; }
+
+/* ---------- banners ---------- */
+.banner {
+  border: 1px solid var(--warn-border);
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 16px 0;
+  font-size: .95rem;
+}
+.banner strong { display: block; margin-bottom: 4px; }
+.banner a { color: var(--warn-ink); font-weight: 600; }
+
+.demo-note {
+  border: 1px dashed var(--faint);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  color: var(--muted);
+  font-size: .9rem;
+  margin: 16px 0;
+}
+
+/* ---------- district picker ---------- */
+.district-option {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+.district-option:hover { border-color: var(--accent); }
+.district-option input { margin-right: 10px; }
+.district-option .d-name { font-weight: 700; }
+.district-option .d-desc { color: var(--muted); font-size: .9rem; margin: 4px 0 0 26px; }
+
+/* ---------- ballot ---------- */
+.election-head { padding: 24px 0 4px; }
+.election-head h1 { font-size: 1.6rem; margin: 0 0 6px; }
+.election-head .meta { color: var(--muted); font-size: .95rem; margin: 0 0 4px; }
+
+.level-title {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 6px;
+  margin: 30px 0 12px;
+}
+
+details.contest {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 0 0 14px;
+  overflow: hidden;
+}
+details.contest summary {
+  padding: 16px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.02rem;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+details.contest summary::-webkit-details-marker { display: none; }
+details.contest summary .chev { color: var(--muted); font-size: .85rem; }
+details.contest[open] summary .chev { transform: rotate(180deg); }
+details.contest summary .c-dist { display: block; font-weight: 400; font-size: .85rem; color: var(--muted); }
+.contest-body { padding: 0 16px 16px; border-top: 1px solid var(--border); }
+
+/* ---------- candidate cards (IDENTICAL layout for all) ---------- */
+.candidate {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin: 14px 0;
+  background: #fff;
+}
+.cand-head { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
+.photo {
+  width: 64px; height: 64px; flex: none;
+  border-radius: 50%;
+  background: var(--border);
+  color: var(--muted);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 1.3rem;
+}
+.cand-head h3 { margin: 0; font-size: 1.15rem; }
+.cand-office { margin: 2px 0 6px; font-size: .9rem; color: var(--muted); }
+.party {
+  display: inline-block;
+  background: #f5f5f4;
+  border: 1px solid var(--border);
+  color: #44403c;
+  font-size: .78rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.cand-section { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--border); }
+.cand-section h4 { margin: 0 0 6px; font-size: .82rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.cand-section p, .cand-section li { font-size: .95rem; margin: 0 0 6px; }
+.cand-section ul { padding-left: 20px; margin: 0; }
+.cand-section blockquote {
+  margin: 0 0 8px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--border);
+  background: var(--bg);
+  font-style: italic;
+  font-size: .93rem;
+}
+.tag {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #fef3c7;
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  vertical-align: middle;
+}
+.tag.verified { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+.unverified-note { color: var(--muted); font-size: .93rem; }
+.sources { font-size: .85rem; }
+.sources li { margin-bottom: 4px; }
+.fineprint { font-size: .8rem; color: var(--faint); margin-top: 10px; }
+
+/* ---------- trust pages ---------- */
+.prose { padding: 8px 0 32px; }
+.prose h1 { font-size: 1.7rem; margin: 24px 0 12px; }
+.prose h2 { font-size: 1.2rem; margin: 24px 0 8px; }
+.prose p, .prose li { font-size: .98rem; }
+.prose ul { padding-left: 22px; }
+
+/* ---------- footer ---------- */
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  margin-top: 40px;
+  padding: 24px 0 32px;
+  font-size: .88rem;
+  color: var(--muted);
+}
+.site-footer nav { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 14px; }
+.disclaimer {
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  font-size: .82rem;
+}
+
+</style>
+</head>
+<body data-page="home">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="What's On My Ballot — home">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="3" y="7" width="28" height="22" rx="3" fill="#92400e"/>
+        <rect x="13" y="3" width="8" height="6" rx="1" fill="#1c1917"/>
+        <path d="M11 19l5 5 8-10" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span><span class="brand-name">What's On My Ballot</span><br><span class="brand-sub">Free · Non-partisan · Philadelphia pilot</span></span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#">About</a>
+      <a href="#">Methodology</a>
+      <a href="#">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>See exactly what's on <em>your</em> ballot.</h1>
+    <p class="lede">Enter your address and get every race on your Philadelphia ballot — with candidate bios, photos, contact info, voting records, and platforms, presented identically for every candidate. No endorsements. No spin.</p>
+  </section>
+
+  <section class="lookup-card" aria-labelledby="lookup-heading">
+    <h2 id="lookup-heading" class="section-title" style="margin-top:0">Find your ballot</h2>
+    <form id="lookup-form" novalidate>
+      <label for="street">Street address <span class="hint">(optional — but gives you the exact ballot)</span></label>
+      <input id="street" name="street" type="text" autocomplete="street-address" placeholder="1234 Market St">
+      <label for="zip">ZIP code <span class="hint">(required)</span></label>
+      <input id="zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" placeholder="19103 or 19103-1234" required>
+      <p id="zip-error" class="hint" hidden style="color:#b45309">Please enter a valid 5-digit ZIP (ZIP+4 also works).</p>
+      <p class="hint">We never store your address. Lookups happen on your device.</p>
+      <button class="btn btn-block" type="submit">Show my ballot</button>
+    </form>
+  </section>
+
+  <h2 class="section-title">Why we ask for your address</h2>
+  <div class="tiers">
+    <div class="tier">
+      <span class="grade">Best</span>
+      <h3>Full street address</h3>
+      <p>Pinpoints your exact voting district and shows you precisely your ballot. Nothing stored, ever.</p>
+    </div>
+    <div class="tier">
+      <span class="grade">Good</span>
+      <h3>ZIP+4</h3>
+      <p>Much more precise than a 5-digit ZIP — no street address needed.</p>
+    </div>
+    <div class="tier">
+      <span class="grade">Fallback</span>
+      <h3>5-digit ZIP</h3>
+      <p>One ZIP can span several districts, so we'll ask you to confirm your district before showing a ballot.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">How we stay non-partisan</h2>
+  <p>Every candidate gets the <strong>identical</strong> profile layout. Platforms are quoted in the candidates' own words. Every fact carries a source — and anything unverified is labeled <span class="tag">unverified</span>, never guessed. <a href="#">Read our methodology</a>.</p>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Footer">
+      <a href="#">About</a>
+      <a href="#">Methodology</a>
+      <a href="#">Privacy</a>
+      <a href="#">Contact</a>
+      <a href="#">Corrections</a>
+    </nav>
+    <p class="disclaimer"><strong>Unofficial voter information</strong> compiled from public sources. Not affiliated with any government. Verify your ballot, polling place, and deadlines with your state or local election office: <a href="https://vote.phila.gov/">vote.phila.gov</a> · <a href="https://www.pa.gov/en/agencies/vote.html">pa.gov/vote</a>.</p>
+    <p>© <span id="year"></span> What's On My Ballot. A free civic project.</p>
+  </div>
+</footer>
+
+<script>
+/* What's On My Ballot — shared app logic (vanilla JS, no build step) */
+(function () {
+  "use strict";
+
+  /* ---------- helpers ---------- */
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+  function params() { return new URLSearchParams(window.location.search); }
+
+  /* Demo ZIP -> districts map (replaced by real geocoding in production).
+     19143 genuinely spans PA-03 and PA-05 — the reason ZIP-only is unsafe. */
+  var DEMO_ZIP_DISTRICTS = {
+    "19143": [
+      { short: "PA-03", name: "Pennsylvania's 3rd Congressional District", desc: "West & Southwest Philadelphia (parts)" },
+      { short: "PA-05", name: "Pennsylvania's 5th Congressional District", desc: "Southwest Philadelphia (parts)" }
+    ],
+    "19104": [
+      { short: "PA-03", name: "Pennsylvania's 3rd Congressional District", desc: "University City, West Philadelphia" }
+    ],
+    "19106": [
+      { short: "PA-02", name: "Pennsylvania's 2nd Congressional District", desc: "Society Hill, Old City, Washington Square" }
+    ]
+  };
+  var ALL_DEMO_DISTRICTS = [
+    { short: "PA-02", name: "Pennsylvania's 2nd Congressional District", desc: "Northeast & parts of Center City Philadelphia" },
+    { short: "PA-03", name: "Pennsylvania's 3rd Congressional District", desc: "West & Northwest Philadelphia" },
+    { short: "PA-05", name: "Pennsylvania's 5th Congressional District", desc: "Southwest Philadelphia & Delaware County" }
+  ];
+
+  function tag(conf) {
+    if (conf === "verified") return ' <span class="tag verified">verified</span>';
+    if (conf === "unverified") return ' <span class="tag">unverified</span>';
+    return "";
+  }
+
+  function initials(name) {
+    return name.split(/\s+/).map(function (w) { return w[0]; }).join("").slice(0, 2).toUpperCase();
+  }
+
+  /* ---------- candidate card (IDENTICAL layout for every candidate) ---------- */
+  function candidateCard(c, contest) {
+    var photo = c.photo_url
+      ? '<img class="photo" src="' + esc(c.photo_url) + '" alt="Photo of ' + esc(c.name) + '">'
+      : '<div class="photo" role="img" aria-label="No photo available">' + esc(initials(c.name)) + "</div>";
+
+    var bio = c.bio
+      ? "<p>" + esc(c.bio) + tag(c.bio_confidence) + "</p>"
+      : '<p class="unverified-note">No verified biography available yet.' + tag("unverified") + "</p>";
+
+    var contact = c.contact && (c.contact.website || c.contact.phone || c.contact.email)
+      ? "<ul>" +
+        (c.contact.website ? '<li>Website: <a href="' + esc(c.contact.website) + '" rel="noopener">' + esc(c.contact.website.replace(/^https?:\/\//, "")) + "</a></li>" : "") +
+        (c.contact.phone ? "<li>Phone: " + esc(c.contact.phone) + "</li>" : "") +
+        (c.contact.email ? '<li>Email: <a href="mailto:' + esc(c.contact.email) + '">' + esc(c.contact.email) + "</a></li>" : "") +
+        "</ul>" + tag(c.contact_confidence)
+      : '<p class="unverified-note">No verified contact information available yet.' + tag("unverified") + "</p>";
+
+    var votes = (c.key_votes && c.key_votes.length)
+      ? "<ul>" + c.key_votes.map(function (v) {
+          return "<li><strong>" + esc(v.bill) + ":</strong> " + esc(v.position) +
+            (v.source_url ? ' <a href="' + esc(v.source_url) + '" rel="noopener">source</a>' : "") + "</li>";
+        }).join("") + "</ul>" + tag(c.key_votes_confidence)
+      : '<p class="unverified-note">No verified voting record available yet.' + tag("unverified") + "</p>";
+
+    var platform = (c.platform_quotes && c.platform_quotes.length)
+      ? c.platform_quotes.map(function (q) {
+          return "<blockquote>&ldquo;" + esc(q.quote) + "&rdquo;" +
+            (q.source_url ? ' <a href="' + esc(q.source_url) + '" rel="noopener">source</a>' : "") + "</blockquote>";
+        }).join("") + "<p class=\"fineprint\">In the candidate's own words, quoted from their published materials." + tag(c.platform_confidence) + "</p>"
+      : '<p class="unverified-note">No verified platform statements available yet.' + tag("unverified") + "</p>";
+
+    var sources = (c.sources && c.sources.length)
+      ? '<ul class="sources">' + c.sources.map(function (s) {
+          return '<li><a href="' + esc(s.url) + '" rel="noopener">' + esc(s.label || s.url) + "</a></li>";
+        }).join("") + "</ul>" + tag(c.sources_confidence)
+      : '<p class="unverified-note">No verified sources on file yet.' + tag("unverified") + "</p>";
+
+    return (
+      '<article class="candidate" id="cand-' + esc(c.id) + '">' +
+        '<div class="cand-head">' + photo +
+          "<div><h3>" + esc(c.name) + "</h3>" +
+          '<p class="cand-office">' + esc(contest.office) + " &middot; " + esc(contest.district) + "</p>" +
+          '<span class="party">' + esc(c.party) + "</span></div>" +
+        "</div>" +
+        '<div class="cand-section"><h4>Bio</h4>' + bio + "</div>" +
+        '<div class="cand-section"><h4>Contact</h4>' + contact + "</div>" +
+        '<div class="cand-section"><h4>Key votes</h4>' + votes + "</div>" +
+        '<div class="cand-section"><h4>Running on</h4>' + platform + "</div>" +
+        '<div class="cand-section"><h4>Sources</h4>' + sources + "</div>" +
+      "</article>"
+    );
+  }
+
+  /* ---------- page inits ---------- */
+  function initHome() {
+    var form = document.getElementById("lookup-form");
+    if (!form) return;
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var street = document.getElementById("street").value.trim();
+      var zip = document.getElementById("zip").value.trim();
+      if (!/^\d{5}(-\d{4})?$/.test(zip)) {
+        document.getElementById("zip-error").hidden = false;
+        return;
+      }
+      document.getElementById("zip-error").hidden = true;
+      if (street) {
+        // Full address: exact ballot in production. Demo shows all Philly federal races.
+        window.location.href = "ballot.html?mode=address&zip=" + encodeURIComponent(zip);
+      } else {
+        window.location.href = "district-picker.html?zip=" + encodeURIComponent(zip);
+      }
+    });
+  }
+
+  function initPicker() {
+    var q = params();
+    var zip = (q.get("zip") || "").trim();
+    var zipEl = document.getElementById("picker-zip");
+    if (zipEl) zipEl.textContent = zip || "—";
+    var base = zip.split("-")[0];
+    var options = DEMO_ZIP_DISTRICTS[base] || ALL_DEMO_DISTRICTS;
+    var list = document.getElementById("district-list");
+    var narrowed = DEMO_ZIP_DISTRICTS[base] ? true : false;
+
+    list.innerHTML = options.map(function (d, i) {
+      return '<label class="district-option">' +
+        '<input type="radio" name="district" value="' + esc(d.short) + '"' + (i === 0 ? " checked" : "") + "> " +
+        '<span class="d-name">' + esc(d.name) + "</span>" +
+        '<p class="d-desc">' + esc(d.desc) + "</p></label>";
+    }).join("");
+
+    var note = document.getElementById("picker-note");
+    if (note) {
+      note.innerHTML = narrowed
+        ? "Your ZIP code touches <strong>" + options.length + " congressional districts</strong>. Pick yours to see the right ballot."
+        : "We couldn't narrow this ZIP code to specific districts, so we're showing every district that touches Philadelphia. Pick yours — or better, go back and enter your full street address for an exact match.";
+    }
+
+    document.getElementById("picker-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var chosen = document.querySelector('input[name="district"]:checked').value;
+      window.location.href = "ballot.html?district=" + encodeURIComponent(chosen) +
+        "&unconfirmed=1&zip=" + encodeURIComponent(zip);
+    });
+  }
+
+  function initBallot() {
+    var q = params();
+    var mount = document.getElementById("ballot-mount");
+    if (!mount) return;
+
+    fetch("sample-ballot.json")
+      .then(function (r) { if (!r.ok) throw new Error("data load failed"); return r.json(); })
+      .then(function (data) { renderBallot(data, q, mount); })
+      .catch(function () {
+        mount.innerHTML = '<div class="banner"><strong>Couldn\'t load ballot data.</strong>Please check your connection and try again.</div>';
+      });
+  }
+
+  function renderBallot(data, q, mount) {
+    var district = q.get("district");
+    var unconfirmed = q.get("unconfirmed") === "1";
+    var mode = q.get("mode");
+
+    var html = '<div class="election-head"><h1>' + esc(data.election.name) + "</h1>" +
+      '<p class="meta">' + esc(data.election.date_display) + " &middot; Philadelphia, PA</p>" +
+      '<p class="meta">Data refreshed ' + esc(data.election.data_refreshed) + " &middot; " + esc(data.election.data_note) + "</p></div>";
+
+    if (unconfirmed) {
+      html += '<div class="banner" role="alert"><strong>District unconfirmed.</strong>' +
+        "You entered a ZIP code only, and ZIP codes can cross district lines — so this ballot may not be yours. " +
+        "Confirm your district with the official <a href=\"https://www.pavoterservices.pa.gov/\">PA voter services lookup</a>, " +
+        "or <a href=\"index.html\">enter your full address</a> for an exact match.</div>";
+    }
+    if (mode === "address") {
+      html += '<div class="demo-note"><strong>Demo mode:</strong> live address lookup isn\'t connected yet, so we\'re showing every Philadelphia federal race. ' +
+        "In production, your full address resolves to your exact district.</div>";
+    }
+
+    var levels = ["Federal", "State", "Local"];
+    var contests = data.contests.filter(function (c) {
+      if (district && c.district_short && c.district_short !== district) return false;
+      return true;
+    });
+
+    levels.forEach(function (level, li) {
+      var inLevel = contests.filter(function (c) { return c.level === level; });
+      html += '<h2 class="level-title">' + esc(level) + "</h2>";
+      if (!inLevel.length) {
+        html += '<p class="unverified-note">No ' + esc(level.toLowerCase()) +
+          ' races in this sample file yet — the data pipeline will add them.</p>';
+        return;
+      }
+      inLevel.forEach(function (c, i) {
+        html += '<details class="contest"' + (i === 0 && li === 0 ? " open" : "") + ">" +
+          "<summary><span>" + esc(c.office) + '<span class="c-dist">' + esc(c.district) + "</span></span>" +
+          '<span class="chev" aria-hidden="true">&#9660;</span></summary>' +
+          '<div class="contest-body">' +
+          c.candidates.map(function (cand) { return candidateCard(cand, c); }).join("") +
+          "</div></details>";
+      });
+    });
+
+    mount.innerHTML = html;
+  }
+
+  /* ---------- boot ---------- */
+  document.addEventListener("DOMContentLoaded", function () {
+    var y = document.getElementById("year");
+    if (y) y.textContent = new Date().getFullYear();
+
+    var page = document.body.getAttribute("data-page");
+    if (page === "home") initHome();
+    if (page === "picker") initPicker();
+    if (page === "ballot") initBallot();
+
+    // PWA service worker (only on https / localhost)
+    if ("serviceWorker" in navigator && /^https?:$/.test(window.location.protocol)) {
+      navigator.serviceWorker.register("sw.js").catch(function () {});
+    }
+  });
+})();
+
+</script>
+</body>
+</html>
