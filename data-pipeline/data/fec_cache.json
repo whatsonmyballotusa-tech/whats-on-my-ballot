@@ -1,0 +1,158 @@
+{
+  "H4PA13199": {
+    "fec_candidate_id": "H4PA13199",
+    "name": "BOYLE, BRENDAN F",
+    "party": "DEMOCRATIC PARTY",
+    "office": "House",
+    "state": "PA",
+    "district": "02",
+    "incumbent_challenge": "Incumbent",
+    "candidate_status": "C",
+    "principal_committee": {
+      "committee_id": "C00543363",
+      "name": "CITIZENS FOR BOYLE"
+    },
+    "finance_cycle": 2026,
+    "finance": {
+      "total_receipts": 2451957.76,
+      "total_disbursements": 729723.16,
+      "cash_on_hand_end_period": null,
+      "debts_owed": null,
+      "coverage_end_date": "2026-06-30T00:00:00"
+    },
+    "sources": [
+      "https://api.open.fec.gov/v1/candidate/H4PA13199/",
+      "https://www.fec.gov/data/candidate/H4PA13199/?cycle=2026"
+    ]
+  },
+  "H6PA02205": {
+    "fec_candidate_id": "H6PA02205",
+    "name": "ARRIAGA, JESSICA",
+    "party": "REPUBLICAN PARTY",
+    "office": "House",
+    "state": "PA",
+    "district": "02",
+    "incumbent_challenge": "Challenger",
+    "candidate_status": "N",
+    "principal_committee": {
+      "committee_id": "C00931238",
+      "name": "JESSICA ARRIAGA FOR CONGRESS"
+    },
+    "finance_cycle": 2026,
+    "finance": {
+      "total_receipts": null,
+      "total_disbursements": null,
+      "cash_on_hand_end_period": null,
+      "debts_owed": null,
+      "coverage_end_date": null
+    },
+    "sources": [
+      "https://api.open.fec.gov/v1/candidate/H6PA02205/",
+      "https://www.fec.gov/data/candidate/H6PA02205/?cycle=2026"
+    ]
+  },
+  "H6PA03203": {
+    "fec_candidate_id": "H6PA03203",
+    "name": "RABB, CHRISTOPHER M.",
+    "party": "DEMOCRATIC PARTY",
+    "office": "House",
+    "state": "PA",
+    "district": "03",
+    "incumbent_challenge": "Open seat",
+    "candidate_status": "C",
+    "principal_committee": {
+      "committee_id": "C00852475",
+      "name": "RABB FOR CONGRESS"
+    },
+    "finance_cycle": 2026,
+    "finance": {
+      "total_receipts": 1329253.47,
+      "total_disbursements": 1307801.84,
+      "cash_on_hand_end_period": null,
+      "debts_owed": null,
+      "coverage_end_date": "2026-06-30T00:00:00"
+    },
+    "sources": [
+      "https://api.open.fec.gov/v1/candidate/H6PA03203/",
+      "https://www.fec.gov/data/candidate/H6PA03203/?cycle=2026"
+    ]
+  },
+  "H6PA03369": {
+    "fec_candidate_id": "H6PA03369",
+    "name": "MAHONEY, DENNIS JOSEPH",
+    "party": "INDEPENDENT",
+    "office": "House",
+    "state": "PA",
+    "district": "03",
+    "incumbent_challenge": "Open seat",
+    "candidate_status": "C",
+    "principal_committee": {
+      "committee_id": "C00949255",
+      "name": "FRIENDS OF DENNIS MAHONEY"
+    },
+    "finance_cycle": 2026,
+    "finance": {
+      "total_receipts": 10800.0,
+      "total_disbursements": 2548.25,
+      "cash_on_hand_end_period": null,
+      "debts_owed": null,
+      "coverage_end_date": "2026-06-30T00:00:00"
+    },
+    "sources": [
+      "https://api.open.fec.gov/v1/candidate/H6PA03369/",
+      "https://www.fec.gov/data/candidate/H6PA03369/?cycle=2026"
+    ]
+  },
+  "H8PA07200": {
+    "fec_candidate_id": "H8PA07200",
+    "name": "SCANLON, MARY GAY",
+    "party": "DEMOCRATIC PARTY",
+    "office": "House",
+    "state": "PA",
+    "district": "05",
+    "incumbent_challenge": "Incumbent",
+    "candidate_status": "C",
+    "principal_committee": {
+      "committee_id": "C00669358",
+      "name": "SCANLON FOR CONGRESS"
+    },
+    "finance_cycle": 2026,
+    "finance": {
+      "total_receipts": 990585.93,
+      "total_disbursements": 859741.53,
+      "cash_on_hand_end_period": null,
+      "debts_owed": null,
+      "coverage_end_date": "2026-06-30T00:00:00"
+    },
+    "sources": [
+      "https://api.open.fec.gov/v1/candidate/H8PA07200/",
+      "https://www.fec.gov/data/candidate/H8PA07200/?cycle=2026"
+    ]
+  },
+  "H6PA05216": {
+    "fec_candidate_id": "H6PA05216",
+    "name": "MANGANARO, NICHOLAS WALN MORRIS",
+    "party": "REPUBLICAN PARTY",
+    "office": "House",
+    "state": "PA",
+    "district": "05",
+    "incumbent_challenge": "Challenger",
+    "candidate_status": "C",
+    "principal_committee": {
+      "committee_id": "C00944553",
+      "name": "MANGANARO FOR CONGRESS"
+    },
+    "finance_cycle": 2026,
+    "finance": {
+      "total_receipts": 9296.15,
+      "total_disbursements": 3366.16,
+      "cash_on_hand_end_period": null,
+      "debts_owed": null,
+      "coverage_end_date": "2026-06-30T00:00:00"
+    },
+    "sources": [
+      "https://api.open.fec.gov/v1/candidate/H6PA05216/",
+      "https://www.fec.gov/data/candidate/H6PA05216/?cycle=2026"
+    ]
+  }
+}
