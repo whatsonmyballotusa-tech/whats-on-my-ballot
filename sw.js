@@ -1,5 +1,5 @@
 /* What's On My Ballot — minimal offline service worker (cache-first, same-origin) */
-var CACHE = "womb-v1";
+var CACHE = "womb-v2";
 var PRECACHE = [
   "index.html",
   "district-picker.html",
@@ -11,8 +11,12 @@ var PRECACHE = [
   "corrections.html",
   "css/styles.css",
   "js/app.js",
+  "js/corrections.js",
   "sample-ballot.json",
-  "manifest.json"
+  "manifest.json",
+  "icons/icon-192.png",
+  "icons/icon-512.png",
+  "icons/icon-512-maskable.png"
 ];
 
 self.addEventListener("install", function (e) {
