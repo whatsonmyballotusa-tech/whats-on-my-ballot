@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Confirm your district — What's On My Ballot</title>
+<meta name="description" content="Your ZIP code touches more than one district. Confirm yours to see the correct ballot.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#faf9f7">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="picker">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="What's On My Ballot — home">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="3" y="7" width="28" height="22" rx="3" fill="#92400e"/>
+        <rect x="13" y="3" width="8" height="6" rx="1" fill="#1c1917"/>
+        <path d="M11 19l5 5 8-10" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span><span class="brand-name">What's On My Ballot</span><br><span class="brand-sub">Free · Non-partisan · Philadelphia pilot</span></span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="about.html">About</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="banner" role="alert">
+    <strong>District unconfirmed.</strong>
+    ZIP code <strong id="picker-zip">—</strong> alone can't pinpoint your district — ZIP codes are mail routes, not political boundaries. Pick your district below, or <a href="index.html">go back and enter your full street address</a> for an exact match.
+  </div>
+
+  <h1 class="section-title">Which district are you in?</h1>
+  <p id="picker-note" class="hint"></p>
+
+  <form id="picker-form">
+    <div id="district-list" role="radiogroup" aria-label="Congressional districts"></div>
+    <button class="btn btn-block" type="submit">Show my ballot</button>
+  </form>
+
+  <p class="hint" style="margin-top:16px">Not sure? Look up your official district at the <a href="https://www.pavoterservices.pa.gov/">PA voter services site</a>, then come back and pick it here.</p>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Footer">
+      <a href="about.html">About</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="contact.html">Contact</a>
+      <a href="corrections.html">Corrections</a>
+    </nav>
+    <p class="disclaimer"><strong>Unofficial voter information</strong> compiled from public sources. Not affiliated with any government. Verify your ballot, polling place, and deadlines with your state or local election office: <a href="https://vote.phila.gov/">vote.phila.gov</a> · <a href="https://www.pa.gov/en/agencies/vote.html">pa.gov/vote</a>.</p>
+    <p>© <span id="year"></span> What's On My Ballot. A free civic project.</p>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
