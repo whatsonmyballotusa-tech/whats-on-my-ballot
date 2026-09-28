@@ -1,1 +1,31 @@
-{"background_color":"#faf9f7","description":"Free, non-partisan. Enter your address, see exactly what's on your ballot.","display":"standalone","icons":[{"purpose":"any","sizes":"192x192","src":"icons/icon-192.png","type":"image/png"},{"purpose":"any","sizes":"512x512","src":"icons/icon-512.png","type":"image/png"},{"purpose":"maskable","sizes":"512x512","src":"icons/icon-512-maskable.png","type":"image/png"}],"name":"What's On My Ballot","scope":".","short_name":"Ballot Guide","start_url":"index.html","theme_color":"#faf9f7"}
+{
+  "background_color": "#faf9f7",
+  "description": "Free, non-partisan. Enter your address, see exactly what's on your ballot.",
+  "display": "standalone",
+  "icons": [
+    {
+      "purpose": "any",
+      "sizes": "192x192",
+      "src": "icons/icon-192.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "any",
+      "sizes": "512x512",
+      "src": "icons/icon-512.png",
+      "type": "image/png"
+    },
+    {
+      "purpose": "maskable",
+      "sizes": "512x512",
+      "src": "icons/icon-512-maskable.png",
+      "type": "image/png"
+    }
+  ],
+  "name": "What's On My Ballot",
+  "scope": "https://whatsonmyballotusa-tech.github.io/whats-on-my-ballot/",
+  "short_name": "Ballot Guide",
+  "start_url": "https://whatsonmyballotusa-tech.github.io/whats-on-my-ballot/index.html",
+  "theme_color": "#faf9f7",
+  "id": "https://whatsonmyballotusa-tech.github.io/whats-on-my-ballot/"
+}
