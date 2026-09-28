@@ -1,0 +1,283 @@
+/* What's On My Ballot — neutral, non-partisan design system.
+   Deliberately NO red/blue party color-coding anywhere. */
+
+:root {
+  --bg: #faf9f7;
+  --surface: #ffffff;
+  --ink: #1c1917;
+  --muted: #78716c;
+  --faint: #a8a29e;
+  --border: #e7e5e4;
+  --accent: #92400e;        /* warm amber-brown, party-neutral */
+  --accent-soft: #fef3c7;
+  --accent-border: #f5d78e;
+  --warn-bg: #fffbeb;
+  --warn-border: #fcd34d;
+  --warn-ink: #78350f;
+  --radius: 12px;
+  --maxw: 760px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+  font-size: 16px;
+}
+
+a { color: var(--accent); }
+a:hover { color: #78350f; }
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 16px; }
+
+/* ---------- header ---------- */
+.site-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+.brand svg { flex: none; }
+.brand-name { font-weight: 700; font-size: 1.05rem; line-height: 1.2; }
+.brand-sub { font-size: 0.75rem; color: var(--muted); }
+.site-nav { display: flex; gap: 14px; font-size: 0.9rem; }
+.site-nav a { color: var(--muted); text-decoration: none; }
+.site-nav a:hover { color: var(--ink); text-decoration: underline; }
+
+/* ---------- hero / home ---------- */
+.hero { padding: 36px 0 8px; text-align: left; }
+.hero h1 { font-size: 1.9rem; line-height: 1.25; margin: 0 0 10px; }
+.hero p.lede { color: var(--muted); font-size: 1.05rem; margin: 0 0 20px; }
+
+.lookup-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 8px 0 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+.lookup-card label { display: block; font-weight: 600; margin: 12px 0 6px; font-size: .95rem; }
+.lookup-card label:first-child { margin-top: 0; }
+.lookup-card input {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+}
+.lookup-card input:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.hint { font-size: .85rem; color: var(--muted); margin: 6px 0 0; }
+
+.btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 22px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  margin-top: 16px;
+}
+.btn:hover { background: #78350f; color: #fff; }
+.btn-block { display: block; width: 100%; }
+.btn-secondary {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover { background: var(--bg); color: var(--ink); }
+
+.tiers { display: grid; gap: 12px; margin: 0 0 28px; }
+@media (min-width: 640px) { .tiers { grid-template-columns: 1fr 1fr 1fr; } }
+.tier {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.tier h3 { margin: 0 0 6px; font-size: .95rem; }
+.tier p { margin: 0; font-size: .88rem; color: var(--muted); }
+.tier .grade { display: inline-block; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); margin-bottom: 6px; }
+
+.section-title { font-size: 1.25rem; margin: 28px 0 12px; }
+
+/* ---------- banners ---------- */
+.banner {
+  border: 1px solid var(--warn-border);
+  background: var(--warn-bg);
+  color: var(--warn-ink);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin: 16px 0;
+  font-size: .95rem;
+}
+.banner strong { display: block; margin-bottom: 4px; }
+.banner a { color: var(--warn-ink); font-weight: 600; }
+
+.demo-note {
+  border: 1px dashed var(--faint);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  color: var(--muted);
+  font-size: .9rem;
+  margin: 16px 0;
+}
+
+/* ---------- district picker ---------- */
+.district-option {
+  display: block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+.district-option:hover { border-color: var(--accent); }
+.district-option input { margin-right: 10px; }
+.district-option .d-name { font-weight: 700; }
+.district-option .d-desc { color: var(--muted); font-size: .9rem; margin: 4px 0 0 26px; }
+
+/* ---------- ballot ---------- */
+.election-head { padding: 24px 0 4px; }
+.election-head h1 { font-size: 1.6rem; margin: 0 0 6px; }
+.election-head .meta { color: var(--muted); font-size: .95rem; margin: 0 0 4px; }
+
+.level-title {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--muted);
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 6px;
+  margin: 30px 0 12px;
+}
+
+details.contest {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 0 0 14px;
+  overflow: hidden;
+}
+details.contest summary {
+  padding: 16px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.02rem;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+details.contest summary::-webkit-details-marker { display: none; }
+details.contest summary .chev { color: var(--muted); font-size: .85rem; }
+details.contest[open] summary .chev { transform: rotate(180deg); }
+details.contest summary .c-dist { display: block; font-weight: 400; font-size: .85rem; color: var(--muted); }
+.contest-body { padding: 0 16px 16px; border-top: 1px solid var(--border); }
+
+/* ---------- candidate cards (IDENTICAL layout for all) ---------- */
+.candidate {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin: 14px 0;
+  background: #fff;
+}
+.cand-head { display: flex; gap: 14px; align-items: center; margin-bottom: 14px; }
+.photo {
+  width: 64px; height: 64px; flex: none;
+  border-radius: 50%;
+  background: var(--border);
+  color: var(--muted);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 1.3rem;
+}
+.cand-head h3 { margin: 0; font-size: 1.15rem; }
+.cand-office { margin: 2px 0 6px; font-size: .9rem; color: var(--muted); }
+.party {
+  display: inline-block;
+  background: #f5f5f4;
+  border: 1px solid var(--border);
+  color: #44403c;
+  font-size: .78rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+.cand-section { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--border); }
+.cand-section h4 { margin: 0 0 6px; font-size: .82rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.cand-section p, .cand-section li { font-size: .95rem; margin: 0 0 6px; }
+.cand-section ul { padding-left: 20px; margin: 0; }
+.cand-section blockquote {
+  margin: 0 0 8px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--border);
+  background: var(--bg);
+  font-style: italic;
+  font-size: .93rem;
+}
+.tag {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #fef3c7;
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  vertical-align: middle;
+}
+.tag.verified { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+.unverified-note { color: var(--muted); font-size: .93rem; }
+.sources { font-size: .85rem; }
+.sources li { margin-bottom: 4px; }
+.fineprint { font-size: .8rem; color: var(--faint); margin-top: 10px; }
+
+/* ---------- trust pages ---------- */
+.prose { padding: 8px 0 32px; }
+.prose h1 { font-size: 1.7rem; margin: 24px 0 12px; }
+.prose h2 { font-size: 1.2rem; margin: 24px 0 8px; }
+.prose p, .prose li { font-size: .98rem; }
+.prose ul { padding-left: 22px; }
+
+/* ---------- footer ---------- */
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  margin-top: 40px;
+  padding: 24px 0 32px;
+  font-size: .88rem;
+  color: var(--muted);
+}
+.site-footer nav { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 14px; }
+.disclaimer {
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  font-size: .82rem;
+}
