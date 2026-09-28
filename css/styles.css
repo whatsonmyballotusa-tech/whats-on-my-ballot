@@ -259,6 +259,59 @@ details.contest summary .c-dist { display: block; font-weight: 400; font-size: .
 .sources li { margin-bottom: 4px; }
 .fineprint { font-size: .8rem; color: var(--faint); margin-top: 10px; }
 
+/* ---------- tags & badges ---------- */
+.tag.unconf {
+  background: #fef3c7;
+  border-color: #f5d78e;
+  color: #92400e;
+}
+.status-pill {
+  display: inline-block;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin: 2px 4px 2px 0;
+}
+.group-sub { font-weight: 400; font-size: .78rem; color: var(--faint); text-transform: none; letter-spacing: 0; }
+
+/* ---------- ballot extras ---------- */
+.filter-bar { font-size: .9rem; color: var(--muted); margin: 10px 0 0; }
+.election-facts { margin: 14px 0 0; }
+.election-facts ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.election-facts li { font-size: .92rem; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; }
+.photo-svg { width: 100%; height: 100%; border-radius: 50%; display: block; }
+.photo-empty { overflow: hidden; padding: 0; }
+
+/* ---------- forms (picker, corrections) ---------- */
+.lookup-card select, .lookup-card textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  font-family: inherit;
+}
+.lookup-card select:focus, .lookup-card textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+.lookup-card textarea { resize: vertical; min-height: 76px; }
+.form-row { display: grid; gap: 0 12px; }
+@media (min-width: 560px) { .form-row { grid-template-columns: 1fr 1fr; } }
+.picker-row { margin: 14px 0; }
+.picker-row label { display: block; font-weight: 600; margin-bottom: 6px; font-size: .95rem; }
+.picker-row select {
+  width: 100%; padding: 12px 14px; font-size: 1rem;
+  border: 1px solid var(--border); border-radius: 8px; background: #fff; color: var(--ink);
+}
+#correction-status[data-ok="1"] { color: #065f46; }
+#correction-status[data-ok="0"] { color: #b45309; }
+#correction-log ul { padding-left: 20px; }
+#correction-log li { margin-bottom: 8px; font-size: .92rem; }
+
 /* ---------- trust pages ---------- */
 .prose { padding: 8px 0 32px; }
 .prose h1 { font-size: 1.7rem; margin: 24px 0 12px; }
