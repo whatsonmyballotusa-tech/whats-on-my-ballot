@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What's On My Ballot — Philadelphia</title>
+<meta name="description" content="Free, non-partisan. Enter your address and see exactly what's on your Philadelphia ballot — candidates, bios, voting records, and platforms.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#faf9f7">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="home">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="What's On My Ballot — home">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <rect x="3" y="7" width="28" height="22" rx="3" fill="#92400e"/>
+        <rect x="13" y="3" width="8" height="6" rx="1" fill="#1c1917"/>
+        <path d="M11 19l5 5 8-10" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span><span class="brand-name">What's On My Ballot</span><br><span class="brand-sub">Free · Non-partisan · Philadelphia pilot</span></span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="about.html">About</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>See exactly what's on <em>your</em> ballot.</h1>
+    <p class="lede">Enter your address and get every race on your Philadelphia ballot — with candidate bios, photos, contact info, voting records, and platforms, presented identically for every candidate. No endorsements. No spin.</p>
+  </section>
+
+  <section class="lookup-card" aria-labelledby="lookup-heading">
+    <h2 id="lookup-heading" class="section-title" style="margin-top:0">Find your ballot</h2>
+    <form id="lookup-form" novalidate>
+      <label for="street">Street address <span class="hint">(optional — but gives you the exact ballot)</span></label>
+      <input id="street" name="street" type="text" autocomplete="street-address" placeholder="1234 Market St">
+      <label for="zip">ZIP code <span class="hint">(required)</span></label>
+      <input id="zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" placeholder="19103 or 19103-1234" required>
+      <p id="zip-error" class="hint" hidden style="color:#b45309">Please enter a valid 5-digit ZIP (ZIP+4 also works).</p>
+      <p class="hint">We never store your address. Lookups happen on your device.</p>
+      <button class="btn btn-block" type="submit">Show my ballot</button>
+    </form>
+  </section>
+
+  <h2 class="section-title">Why we ask for your address</h2>
+  <div class="tiers">
+    <div class="tier">
+      <span class="grade">Best</span>
+      <h3>Full street address</h3>
+      <p>Pinpoints your exact voting district and shows you precisely your ballot. Nothing stored, ever.</p>
+    </div>
+    <div class="tier">
+      <span class="grade">Good</span>
+      <h3>ZIP+4</h3>
+      <p>Much more precise than a 5-digit ZIP — no street address needed.</p>
+    </div>
+    <div class="tier">
+      <span class="grade">Fallback</span>
+      <h3>5-digit ZIP</h3>
+      <p>One ZIP can span several districts, so we'll ask you to confirm your district before showing a ballot.</p>
+    </div>
+  </div>
+
+  <h2 class="section-title">How we stay non-partisan</h2>
+  <p>Every candidate gets the <strong>identical</strong> profile layout. Platforms are quoted in the candidates' own words. Every fact carries a source — and anything unverified is labeled <span class="tag">unverified</span>, never guessed. <a href="methodology.html">Read our methodology</a>.</p>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Footer">
+      <a href="about.html">About</a>
+      <a href="methodology.html">Methodology</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="contact.html">Contact</a>
+      <a href="corrections.html">Corrections</a>
+    </nav>
+    <p class="disclaimer"><strong>Unofficial voter information</strong> compiled from public sources. Not affiliated with any government. Verify your ballot, polling place, and deadlines with your state or local election office: <a href="https://vote.phila.gov/">vote.phila.gov</a> · <a href="https://www.pa.gov/en/agencies/vote.html">pa.gov/vote</a>.</p>
+    <p>© <span id="year"></span> What's On My Ballot. A free civic project.</p>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>
