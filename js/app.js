@@ -302,6 +302,28 @@
     return html;
   }
 
+  function committeesHtml(cand) {
+    // Rendered ONLY when committees data is present and non-empty (value is a
+    // non-empty array). Otherwise the whole section is omitted — no placeholder,
+    // so challengers and non-federal candidates show nothing here. Identical
+    // treatment for every candidate (nonpartisan by construction).
+    var f = F(cand.committees);
+    var list = Array.isArray(f.v) ? f.v : [];
+    if (!list.length) return "";
+    var items = list.map(function (c) {
+      var subs = Array.isArray(c.subcommittees) ? c.subcommittees : [];
+      var subHtml = subs.length ? "<ul>" + subs.map(function (s) {
+        return "<li>" + esc(s.name || "Subcommittee") + (s.role ? " &mdash; <em>" + esc(s.role) + "</em>" : "") + "</li>";
+      }).join("") + "</ul>" : "";
+      return "<li><strong>" + esc(c.committee || "Committee") + "</strong>" +
+        (c.role ? " &mdash; <em>" + esc(c.role) + "</em>" : "") + subHtml + "</li>";
+    }).join("");
+    return '<div class="cand-section"><h4>Committee assignments' + confTag(f) + "</h4>" +
+      '<ul class="committees">' + items + "</ul>" +
+      sourceLinks(f.sources) +
+      '<p class="fineprint">Committee assignments are for the 119th Congress and may change with each new Congress.</p></div>';
+  }
+
   function sourcesHtml(cand) {
     // Collect candidate-level sources: name/party/bio/contact + explicit sources list.
     var seen = {}, urls = [];
@@ -346,6 +368,7 @@
       '<div class="cand-section"><h4>Contact</h4>' + contactHtml(cand) + "</div>" +
       '<div class="cand-section"><h4>Running on</h4>' + platformHtml(cand) + "</div>" +
       '<div class="cand-section"><h4>Voting record &amp; prior offices</h4>' + recordHtml(cand) + "</div>" +
+      committeesHtml(cand) +
       '<div class="cand-section"><h4>Sources</h4>' + sourcesHtml(cand) + "</div>" +
       "</article>";
   }
