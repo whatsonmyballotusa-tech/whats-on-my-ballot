@@ -1,5 +1,5 @@
 /* What's On My Ballot — minimal offline service worker (cache-first, same-origin) */
-var CACHE = "womb-v5";
+var CACHE = "womb-v6";
 var PRECACHE = [
   "index.html",
   "district-picker.html",
