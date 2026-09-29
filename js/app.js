@@ -190,7 +190,9 @@
 
   function contestGroup(contest, district) {
     var t = district ? district.district_type : null;
-    if (!district || t === "statewide") return "Statewide";
+    // Dataset uses "state" for the statewide district record; accept both it and
+    // "statewide" so the grouping survives either spelling (B1 audit).
+    if (!district || t === "statewide" || t === "state") return "Statewide";
     if (t === "congressional") return "Federal";
     if (t === "state_senate" || t === "state_house") return "State Legislature";
     return "Local";
@@ -394,18 +396,47 @@
       '<div class="contest-body">' + cards + "</div></details>";
   }
 
+  // Some measures have no official ballot title in the dataset (title: null). Build a
+  // neutral working label from the measure's own id slug (e.g. "...-small-business-
+  // contracting-2026" -> "Small Business Contracting"), flagged as unconfirmed so it
+  // is never mistaken for the official ballot wording.
+  function measureFallbackTitle(m) {
+    var id = String(m.id || "");
+    var slug = id.replace(/^pa-measure-(philadelphia-)?/i, "").replace(/-20\d{2}$/, "");
+    var words = slug.split("-").filter(Boolean).map(function (w) {
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    });
+    return words.length ? words.join(" ") : "Ballot measure";
+  }
+
   function measureHtml(m) {
     var title = F(m.title || m.name), q = F(m.question_text || m.question || m.text);
-    var sum = F(m.summary), st = F(m.status || m.ballot_status);
-    var prov = isProvisionalStatus(st) || title.c === "low" || q.c === "low";
+    var sum = F(m.summary), neutral = F(m.neutral_summary);
+    var yes = F(m.what_a_yes_means), no = F(m.what_a_no_means);
+    var fullText = F(m.full_text_url);
+    var st = F(m.status || m.ballot_status);
+    var titleGenerated = !title.v;
+    var titleText = title.v || measureFallbackTitle(m);
+    var prov = isProvisionalStatus(st);
     var body = "";
     if (q.v) body += "<p><strong>Ballot question:</strong> " + esc(q.v) + confTag(q) + "</p>";
     if (sum.v) body += "<p>" + esc(sum.v) + confTag(sum) + "</p>";
-    var links = sourceLinks(title.sources.concat(q.sources, sum.sources));
+    if (neutral.v) body += "<p><strong>What this would do:</strong> " + esc(neutral.v) + confTag(neutral) + "</p>";
+    if (yes.v) body += "<p><strong>What a YES vote means:</strong> " + esc(yes.v) + confTag(yes) + "</p>";
+    if (no.v) body += "<p><strong>What a NO vote means:</strong> " + esc(no.v) + confTag(no) + "</p>";
+    var fullUrl = safeUrl(fullText.v);
+    if (fullUrl) {
+      body += '<p><a href="' + esc(fullUrl) + '" rel="noopener">Read the full measure text</a>' +
+        (fullText.note ? ' <span class="hint">' + esc(fullText.note) + "</span>" : "") +
+        confTag(fullText) + "</p>";
+    }
+    var links = sourceLinks(title.sources.concat(q.sources, sum.sources, neutral.sources,
+      yes.sources, no.sources, fullText.sources));
     if (!body) body = '<p class="unverified-note">No verified information available.' + unconfBadge() + "</p>";
     return '<article class="candidate measure" id="measure-' + esc(m.id || "") + '">' +
-      "<h3>" + esc(title.v || "Ballot measure") + (title.c === "low" ? unconfBadge() : confTag(title)) +
+      "<h3>" + esc(titleText) + (titleGenerated ? unconfBadge() : confTag(title)) +
       (prov ? unconfBadge() : "") + " " + statusBadge(st) + "</h3>" +
+      (titleGenerated ? '<p class="hint">Official ballot title not yet confirmed — this label comes from our dataset.</p>' : "") +
       body + links + "</article>";
   }
 
@@ -517,45 +548,183 @@
     mount.innerHTML = html;
   }
 
+  /* ================= Census Geocoder hedge (B15) ================= */
+
+  // Free, no-key address -> district lookup. The Census geocoder sends no CORS
+  // headers, so fetch() is blocked in browsers; the official Geocoding Services
+  // API docs prescribe JSONP (format=jsonp + callback) as the client-side
+  // transport. Never trust a match that doesn't contain the entered ZIP.
+  var CENSUS_GEO_BASE = "https://geocoding.geo.census.gov/geocoder/geographies/address";
+
+  function censusJsonp(street, zip, cb) {
+    var cbName = "wombCensusCb" + Date.now();
+    var done = false, timer = null;
+    function cleanup() {
+      if (done) return; done = true;
+      try { delete window[cbName]; } catch (e) { window[cbName] = null; }
+      var s = document.getElementById(cbName);
+      if (s && s.parentNode) s.parentNode.removeChild(s);
+      if (timer) clearTimeout(timer);
+    }
+    window[cbName] = function (payload) { cleanup(); cb(null, payload); };
+    var qs = "street=" + encodeURIComponent(street) +
+      "&zip=" + encodeURIComponent(zip) +
+      "&benchmark=Public_AR_Current&vintage=Current_Current" +
+      "&format=jsonp&callback=" + encodeURIComponent(cbName);
+    var s = document.createElement("script");
+    s.id = cbName;
+    s.async = true;
+    s.onerror = function () { cleanup(); cb(new Error("census_unreachable"), null); };
+    s.src = CENSUS_GEO_BASE + "?" + qs;
+    timer = setTimeout(function () { cleanup(); cb(new Error("census_timeout"), null); }, 25000);
+    document.head.appendChild(s);
+  }
+
+  // Extract {cd, house, senate} district numbers from a Census geographies payload.
+  function censusDistrictNumbers(payload, zip) {
+    var matches = payload && payload.result && payload.result.addressMatches;
+    var m = matches && matches[0];
+    if (!m) return null;
+    var matched = String(m.matchedAddress || "").toUpperCase();
+    var zip5 = String(zip).replace(/\D/g, "").slice(0, 5);
+    // Standing rule: a mismatched address must never resolve to a ballot.
+    if (!zip5 || matched.indexOf(zip5) < 0) return null;
+    var geos = m.geographies || {};
+    function layer(needle) {
+      for (var k in geos) {
+        if (geos.hasOwnProperty(k) && k.indexOf(needle) >= 0 && geos[k] && geos[k].length) return geos[k][0];
+      }
+      return null;
+    }
+    function numOf(obj, fieldRe) {
+      if (!obj) return null;
+      for (var k in obj) {
+        if (obj.hasOwnProperty(k) && fieldRe.test(k)) {
+          var n = parseInt(obj[k], 10);
+          if (n) return n;
+        }
+      }
+      var b = parseInt(obj.BASENAME, 10);
+      return b || null;
+    }
+    return {
+      cd: numOf(layer("Congressional Districts"), /^CD\d+$/),
+      house: numOf(layer("Legislative Districts - Lower"), /^SLDL$/),
+      senate: numOf(layer("Legislative Districts - Upper"), /^SLDU$/),
+      matchedAddress: m.matchedAddress
+    };
+  }
+
+  // Map census district numbers onto the app's district codes — but ONLY codes
+  // that exist in the dataset. Anything outside our Philly-pilot coverage is
+  // refused rather than guessed.
+  function censusToSelection(data, nums) {
+    var sel = { congressional: null, state_senate: null, state_house: null };
+    var resolved = [], unresolved = [];
+    var specs = [
+      { type: "congressional", num: nums.cd, kind: "cd", label: "U.S. House" },
+      { type: "state_senate", num: nums.senate, kind: "sldu", label: "PA Senate" },
+      { type: "state_house", num: nums.house, kind: "sldl", label: "PA House" }
+    ];
+    specs.forEach(function (sp) {
+      if (!sp.num) { unresolved.push(sp.label); return; }
+      var want = parseOcd("ocd-division/country:us/state:pa/" + sp.kind + ":" + sp.num).short;
+      var hit = (data.districts || []).some(function (d) {
+        return d.district_type === sp.type && parseOcd(d.ocd_id).short === want;
+      });
+      if (hit) { sel[sp.type] = want; resolved.push(sp.label + " " + want); }
+      else { unresolved.push(sp.label + " " + want); }
+    });
+    return { sel: sel, resolved: resolved, unresolved: unresolved };
+  }
+
   /* ================= page inits ================= */
 
   function initHome() {
     var form = document.getElementById("lookup-form");
     if (!form) return;
     var notice = document.getElementById("lookup-notice");
+    var zipEl = document.getElementById("zip");
+
+    function lookupFallback(prefix) {
+      if (!notice) return;
+      notice.hidden = false;
+      notice.innerHTML = "<strong>Address lookup didn't work.</strong> " + esc(prefix || "") +
+        'Use the <a href="district-picker.html' +
+        (zipEl && zipEl.value.trim() ? "?zip=" + encodeURIComponent(zipEl.value.trim()) : "") +
+        '">manual district picker</a> to choose your districts yourself — ' +
+        "we'd rather show you the picker than risk the wrong ballot.";
+      notice.scrollIntoView({ block: "nearest" });
+    }
+
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var street = document.getElementById("street").value.trim();
-      var zip = document.getElementById("zip").value.trim();
+      var zip = zipEl.value.trim();
       if (!/^\d{5}(-\d{4})?$/.test(zip)) {
         document.getElementById("zip-error").hidden = false;
         return;
       }
       document.getElementById("zip-error").hidden = true;
-      if (street || /-\d{4}$/.test(zip)) {
-        // Exact address / ZIP+4 lookup needs the Google Civic API key, which isn't
-        // configured. Never produce a ballot from an address we can't resolve.
-        if (notice) {
-          notice.hidden = false;
-          notice.innerHTML = "<strong>Exact address lookup isn't connected yet.</strong> " +
-            "It needs a Google Civic API key, which we don't have. " +
-            'Use the <a href="district-picker.html' +
-            (zip ? "?zip=" + encodeURIComponent(zip) : "") +
-            '">manual district picker</a> to choose your districts yourself — ' +
-            "we'd rather show you the picker than risk the wrong ballot.";
-          notice.scrollIntoView({ block: "nearest" });
-        }
+      if (!street) {
+        // ZIP-only (with or without ZIP+4): the Census geocoder needs a street
+        // address, and a ZIP alone spans districts. Never guess a ballot from it.
+        window.location.href = "district-picker.html?zip=" + encodeURIComponent(zip);
         return;
       }
-      window.location.href = "district-picker.html?zip=" + encodeURIComponent(zip);
+      // Full street address: free Census Geocoder lookup (no key needed).
+      if (notice) {
+        notice.hidden = false;
+        notice.innerHTML = "<strong>Looking up your districts…</strong> " +
+          "Using the free U.S. Census Geocoder — nothing is stored.";
+        notice.scrollIntoView({ block: "nearest" });
+      }
+      censusJsonp(street, zip, function (err, payload) {
+        if (err || !payload) {
+          lookupFallback("The address lookup service couldn't be reached. ");
+          return;
+        }
+        var nums = censusDistrictNumbers(payload, zip);
+        if (!nums || !nums.cd) {
+          lookupFallback("We couldn't confirm that address. ");
+          return;
+        }
+        loadDataset().then(function (res) {
+          var out = censusToSelection(res.data, nums);
+          if (!out.sel.congressional) {
+            // The address resolved, but its congressional district isn't in our
+            // Philadelphia-pilot dataset — refuse rather than guess.
+            lookupFallback("That address looks like it's outside our Philadelphia pilot area. ");
+            return;
+          }
+          saveSelection(out.sel);
+          if (out.unresolved.length) {
+            // Partial: pre-fill the districts we could confirm; the picker asks
+            // for the rest instead of us inventing them.
+            window.location.href = "district-picker.html?zip=" + encodeURIComponent(zip) + "&geook=1";
+          } else {
+            window.location.href = "ballot.html";
+          }
+        }).catch(function () {
+          lookupFallback("We couldn't load our district data. ");
+        });
+      });
     });
   }
 
   function districtOptions(data, type) {
+    var seen = {};
     return (data.districts || []).filter(function (d) { return d.district_type === type; })
       .map(function (d) {
         var code = parseOcd(d.ocd_id);
         return { ocd: d.ocd_id, code: code.short || code.type, name: districtName(d), conf: F(d.name).c };
+      })
+      // Defensive: one option per district code even if the dataset ever ships
+      // duplicate records again (B3 audit: cd:02 + cd:2 once mapped to the same PA-02).
+      .filter(function (o) {
+        if (!o.code || seen[o.code]) return false;
+        seen[o.code] = true;
+        return true;
       })
       .sort(function (a, b) { return (a.code || "").localeCompare(b.code || ""); });
   }
@@ -593,6 +762,10 @@
 
       var addrNote = document.getElementById("addr-note");
       if (addrNote) addrNote.hidden = false;
+      if (q.get("geook")) {
+        var geoNote = document.getElementById("geook-note");
+        if (geoNote) geoNote.hidden = false;
+      }
     }).catch(function () {
       document.getElementById("picker-selects").innerHTML =
         '<div class="banner"><strong>Couldn\'t load district data.</strong>Check your connection and try again.</div>';
