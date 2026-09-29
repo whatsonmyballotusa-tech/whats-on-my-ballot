@@ -5792,48 +5792,6 @@
     {
       "district_type": "congressional",
       "name": {
-        "confidence": "high",
-        "sources": [
-          "https://api.open.fec.gov/v1/candidate/H4PA13199/",
-          "https://api.open.fec.gov/v1/candidate/H6PA02205/"
-        ],
-        "value": "Pennsylvania's 2 Congressional District"
-      },
-      "ocd_id": "ocd-division/country:us/state:pa/cd:02",
-      "parent_ocd_id": "ocd-division/country:us/state:pa",
-      "state": "PA"
-    },
-    {
-      "district_type": "congressional",
-      "name": {
-        "confidence": "high",
-        "sources": [
-          "https://api.open.fec.gov/v1/candidate/H6PA03203/",
-          "https://api.open.fec.gov/v1/candidate/H6PA03369/"
-        ],
-        "value": "Pennsylvania's 3 Congressional District"
-      },
-      "ocd_id": "ocd-division/country:us/state:pa/cd:03",
-      "parent_ocd_id": "ocd-division/country:us/state:pa",
-      "state": "PA"
-    },
-    {
-      "district_type": "congressional",
-      "name": {
-        "confidence": "high",
-        "sources": [
-          "https://api.open.fec.gov/v1/candidate/H8PA07200/",
-          "https://api.open.fec.gov/v1/candidate/H6PA05216/"
-        ],
-        "value": "Pennsylvania's 5 Congressional District"
-      },
-      "ocd_id": "ocd-division/country:us/state:pa/cd:05",
-      "parent_ocd_id": "ocd-division/country:us/state:pa",
-      "state": "PA"
-    },
-    {
-      "district_type": "congressional",
-      "name": {
         "confidence": "medium",
         "sources": [
           "https://www.census.gov/mycd/"
