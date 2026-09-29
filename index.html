@@ -43,7 +43,7 @@
       <label for="zip">ZIP code <span class="hint">(required)</span></label>
       <input id="zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" placeholder="19103 or 19103-1234" required>
       <p id="zip-error" class="hint" hidden style="color:#b45309">Please enter a valid 5-digit ZIP (ZIP+4 also works).</p>
-      <p class="hint">We never store your address. Lookups happen on your device.</p>
+      <p class="hint">We never store your address. Street-address lookups go to the free U.S. Census Geocoder to find your districts — nothing is saved.</p>
       <div id="lookup-notice" class="banner" role="alert" hidden></div>
       <button class="btn btn-block" type="submit">Show my ballot</button>
     </form>
@@ -54,12 +54,12 @@
     <div class="tier">
       <span class="grade">Best</span>
       <h3>Full street address</h3>
-      <p>Pinpoints your exact voting district and shows you precisely your ballot. Nothing stored, ever.</p>
+      <p>Looks up your exact voting districts via the free U.S. Census Geocoder and shows precisely your ballot. Nothing is stored, ever.</p>
     </div>
     <div class="tier">
       <span class="grade">Good</span>
       <h3>ZIP+4</h3>
-      <p>More precise than a 5-digit ZIP — but exact lookup still needs an API key we don't have yet, so you'll confirm your districts manually.</p>
+      <p>More precise than a 5-digit ZIP — but our free lookup needs a street address, so you'll confirm your districts manually.</p>
     </div>
     <div class="tier">
       <span class="grade">Fallback</span>
