@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Corrections — What's On My Ballot</title>
+<meta name="description" content="Report an error or claim your candidate profile. Structured reports, human-reviewed.">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#faf9f7">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="corrections">
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="What's On My Ballot — home">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true"><rect x="3" y="7" width="28" height="22" rx="3" fill="#92400e"/><rect x="13" y="3" width="8" height="6" rx="1" fill="#1c1917"/><path d="M11 19l5 5 8-10" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span><span class="brand-name">What's On My Ballot</span><br><span class="brand-sub">Free · Non-partisan · Philadelphia pilot</span></span>
+    </a>
+    <nav class="site-nav" aria-label="Main"><a href="about.html">About</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a></nav>
+  </div>
+</header>
+
+<main class="wrap prose">
+  <h1>Report a correction</h1>
+  <p>We will get things wrong sometimes. What matters is what happens next. Fill out the form — your report is saved on this device and then opened in your email app, prefilled, for you to send. Factual errors are fixed within 48 hours — within 24 hours in the two weeks before an election.</p>
+
+  <form id="correction-form" class="lookup-card" novalidate>
+    <label for="c-name">Your name</label>
+    <input id="c-name" name="name" type="text" autocomplete="name" placeholder="Jane Voter">
+
+    <label for="c-email">Your email <span class="hint">(so we can reply with what changed)</span></label>
+    <input id="c-email" name="email" type="email" autocomplete="email" placeholder="you@example.com">
+
+    <label for="c-relationship">You are</label>
+    <select id="c-relationship" name="relationship">
+      <option value="voter">A voter</option>
+      <option value="candidate">A candidate</option>
+      <option value="campaign_staff">Campaign staff</option>
+      <option value="official">An election official</option>
+    </select>
+
+    <div class="form-row">
+      <div>
+        <label for="c-entity-type">This is about</label>
+        <select id="c-entity-type" name="entityType">
+          <option value="candidate">A candidate</option>
+          <option value="contest">A race / contest</option>
+          <option value="measure">A ballot question</option>
+          <option value="district">A district</option>
+          <option value="election_event">Election dates / deadlines</option>
+        </select>
+      </div>
+      <div>
+        <label for="c-kind">Kind of issue</label>
+        <select id="c-kind" name="kind">
+          <option value="factual_error">Factual error</option>
+          <option value="missing_information">Missing information</option>
+          <option value="outdated_information">Outdated information</option>
+          <option value="photo_attribution">Photo / attribution</option>
+        </select>
+      </div>
+    </div>
+
+    <label for="c-entity-id">Candidate or race <span class="hint">(name, or ID if you know it)</span></label>
+    <input id="c-entity-id" name="entityId" type="text" placeholder="e.g. Brendan F. Boyle, or H4PA13199">
+
+    <label for="c-field">Field <span class="hint">(optional — e.g. bio, phone, platform)</span></label>
+    <input id="c-field" name="field" type="text" placeholder="bio">
+
+    <label for="c-current">What the site currently shows <span class="hint">(optional)</span></label>
+    <input id="c-current" name="currentValue" type="text" placeholder="Copy the text as it appears">
+
+    <label for="c-proposed">What it should say <span class="hint">(required)</span></label>
+    <textarea id="c-proposed" name="proposedValue" rows="3" required placeholder="The corrected text or value"></textarea>
+
+    <label for="c-reason">Why <span class="hint">(one sentence)</span></label>
+    <input id="c-reason" name="reason" type="text" placeholder="e.g. the official bio says otherwise">
+
+    <label for="c-ev1">Source 1 <span class="hint">(a link we can check — required for factual errors)</span></label>
+    <input id="c-ev1" name="evidenceUrl1" type="url" inputmode="url" placeholder="https://…">
+
+    <label for="c-ev2">Source 2 <span class="hint">(independent confirmation — strengthens the report)</span></label>
+    <input id="c-ev2" name="evidenceUrl2" type="url" inputmode="url" placeholder="https://…">
+
+    <p id="correction-status" class="hint" role="status" aria-live="polite"></p>
+    <button class="btn btn-block" type="submit">Build my report</button>
+    <p class="hint">No account needed. Nothing is uploaded — the report opens in your email app and you send it yourself.</p>
+  </form>
+
+  <h2>Candidates: claim your profile</h2>
+  <p>If you're a candidate (or on a campaign team):</p>
+  <ol>
+    <li>Use the form above with "You are" set to <strong>candidate</strong> or <strong>campaign staff</strong>, and email us <strong>from your official campaign or government address</strong> so we can verify it's you.</li>
+    <li>Tell us what's missing or wrong — bio, photo, contact info, platform quotes — with sources.</li>
+    <li>We review against our <a href="methodology.html">verification rules</a> and publish with a changelog note: <em>"Updated [date] at the candidate's request."</em></li>
+  </ol>
+  <p>Claiming a profile lets you correct facts. It does <strong>not</strong> let you rewrite your profile, remove sourced facts, or change how opponents are presented. The identical-layout rule applies to everyone.</p>
+
+  <h2>Public correction log</h2>
+  <div id="correction-log"><p class="hint">Significant corrections are logged here with the date and what changed. (Log begins at launch.)</p></div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav aria-label="Footer"><a href="about.html">About</a><a href="methodology.html">Methodology</a><a href="privacy.html">Privacy</a><a href="contact.html">Contact</a><a href="corrections.html">Corrections</a></nav>
+    <p class="disclaimer"><strong>Unofficial voter information</strong> compiled from public sources. Not affiliated with any government. Verify your ballot, polling place, and deadlines with your state or local election office: <a href="https://vote.phila.gov/">vote.phila.gov</a> · <a href="https://www.pa.gov/en/agencies/vote.html">pa.gov/vote</a>.</p>
+    <p>© <span id="year"></span> What's On My Ballot. A free civic project.</p>
+  </div>
+</footer>
+
+<script src="js/app.js"></script>
+<script src="js/corrections.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    if (window.WOMB_Corrections) {
+      WOMB_Corrections.init({ formId: "correction-form", statusId: "correction-status" });
+    }
+  });
+</script>
+</body>
+</html>
