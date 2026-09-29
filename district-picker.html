@@ -47,7 +47,10 @@
   </form>
 
   <div id="addr-note" class="demo-note" hidden>
-    <strong>A note on address lookup.</strong> Exact address or ZIP+4 lookup needs a Google Civic API key, which we don't have yet — so we don't resolve addresses at all. We'd rather ask you to pick your districts manually than risk showing you the wrong ballot.
+    <strong>A note on address lookup.</strong> The home page looks up street addresses with the free U.S. Census Geocoder — if you came from there, any districts we could confirm are pre-filled below; please pick the rest yourself.
+  </div>
+  <div id="geook-note" class="banner" role="alert" hidden>
+    <strong>We looked up your address.</strong> We confirmed some of your districts below — pick any remaining ones yourself, then continue. We'd rather ask than risk the wrong ballot.
   </div>
 
   <p class="hint" style="margin-top:16px">Not sure? Look up your official districts at the <a href="https://www.pavoterservices.pa.gov/">PA voter services site</a>, then come back and pick them here.</p>
